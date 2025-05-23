@@ -1,0 +1,244 @@
+<!-- character.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="character.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+         <div class="sidebar">
+            <h2>Character List</h2>
+            <ul id="character-list"></ul>
+            <button onclick="createNewCharacter()">+ New Character</button>
+         </div>
+    </div>
+    <div class="tab-menu">
+        <button onclick="openTab('basic')">Basic Info</button>
+        <button onclick="openTab('appearance')">Appearance</button>
+        <button onclick="openTab('personality')">Personality</button>
+        <button onclick="openTab('background')">Background</button>
+        <button onclick="openTab('abilities')">Abilities & Skills</button>
+        <button onclick="openTab('misc')">Miscellaneous</button>
+    </div>
+
+    <div id="character-profile">
+        <div id="basic" class="tab-content">
+            <h2>Basic Info</h2>
+            <form id="basic-info-form">
+                <label>First Name:
+                    <input type="text" id="firstName" name="firstName">
+                </label><br>
+
+                <label>Last Name:
+                    <input type="text" id="lastName" name="lastName">
+                </label><br>
+                
+                <label>Title:
+                    <input type="text" id="title" name="title">
+                </label><br>
+
+                <label>Age:
+                    <input type="number" id="age" name="age">
+                </label><br>
+
+                <label>Gender:
+                    <input type="text" id="gender" name="gender">
+                </label><br>
+
+                <label>Species:
+                    <input type="text" id="species" name="species">
+                </label><br>
+
+                <label>Occupation:
+                    <input type="text" id="occupation" name="occupation">
+                </label><br>
+
+                <label>Homeland:
+                    <input type="text" id="homeland" name="homeland">
+                </label>
+
+            <button type="button" oonclick="saveBasicInfo()">Save</button>
+            </form>
+        </div>
+
+        <div id="appearance" class="tab-content">
+            <h2>Appearance</h2>
+            <form id="appearance-form">
+                <label>Hair Color:
+                    <input type="text" id="hairColor" name="hairColor">
+                </label><br>
+
+                <label>Eye Color:
+                    <input type="text" id="eyeColor" name="eyeColor">
+                </label><br>
+
+                <label>Height:
+                    <input type="text" id="height" name="height">
+                </label><br>
+
+                <label>Weight:
+                    <input type="text" id="weight" name="weight">
+                </label><br>
+
+                <label>Clothing Style:
+                    <input type="text" id="clothingStyle" name="clothingStyle">
+                </label>
+
+                <button type="button" onclick="saveAppearance()">Save</button>
+            </form>
+        </div>
+
+        <div id="personality" class="tab-content">
+            <h2>Personality</h2>
+            <form id="personality-form">
+                <label>Traits:
+                    <textarea id="traits" name="traits" rows="2"></textarea>
+                </label><br>
+
+                <label>Likes:
+                    <textarea id="likes" name="likes" rows="2"></textarea>
+                </label><br>
+
+                <label>Dislikes:
+                    <textarea id="dislikes" name="dislikes" rows="2"></textarea>
+                </label><br>
+
+                <label>Hobbies:
+                    <textarea id="hobbies" name="hobbies" row="2"></textarea>
+                </label><br>
+
+                <label>Strengths:
+                    <textarea id="strengths" name="strengths" rows="2"></textarea>
+                </label><br>
+
+                <label>Weaknesses:
+                    <textarea id="weaknesses" name="weaknesses" rows="2"></textarea>
+                </label><br>
+
+                <label>Motivations:
+                    <textarea id="motivations" name="motivation" rows="2"></textarea>
+                </label><br>
+
+                <label>Goals:
+                    <textarea id="goals" name="goals" rows="2"></textarea>
+                </label><br>
+
+                <label>Fears:
+                    <textarea id="fears" name="fears" rows="2"></textarea>
+                </label><br>
+
+                <label>Secrets:
+                    <textarea id="secrets" name="secrets" rows="2"></textarea>
+                </label>
+
+                <button type="button" onclick="savePersonality()">Save</button>
+            </form>
+        </div>
+
+        <div id="background" class="tab-content">
+            <h2>Background</h2>
+            <form id="background-form">
+                <label>Backstory:
+                    <textarea id="backstory" name="backstory" rows="2"></textarea>
+                </label><br>
+
+                <label>History:
+                    <textarea id="history" name="history" rows="2"></textarea>
+                </label><br>
+
+                <label>Significant Events:
+                    <textarea id="significantEvents" name="significantEvents" rows="2"></textarea>
+                </label><br>
+
+                <label>Childhood:
+                    <textarea id="childhood" name="childhood" rows="2"></textarea>
+                </label><br>
+
+                <label>Education:
+                    <textarea id="education" name="education" rows="2"></textarea>
+                </label><br>
+
+                <label>Family:
+                    <textarea id="family" name="family" rows="2"></textarea>
+                </label><br>
+
+                <label>Relationships: 
+                    <textarea id="relationships" name="relationships" rows="2" placeholder="This will later think to other characters."></textarea>
+                </label>
+
+                <button type="button" onclick="saveBackground()">Save</button>
+            </form>
+        </div>
+
+        <div id="abilities" class="tab-content">
+            <h2>Abilities & Skills</h2>
+            <form id="abilities-skills-form">
+                <label>Abilities:
+                    <textarea id="abilities" name="abilities" rows="2"></textarea>
+                </label><br>
+
+                <label>Skills:
+                    <textarea id="skills" name="skills" rows="2"></textarea>
+                </label><br>
+
+                <label>Special Skills:
+                    <textarea id="specialSkills" name="specialSkills" rows="2"></textarea>
+                </label><br>
+
+                <label>Trained Skills:
+                    <textarea id="trainedSkills" name="trainedSkills" rows="2"></textarea>
+                </label><br>
+
+                <label>Combat Skills:
+                    <textarea id="combatSkills" name="combatSkills" rows="2"></textarea>
+                </label><br>
+
+                <label>Magic Skills:
+                    <textarea id="magicSkills" name="magicSkills" rows="2"></textarea>
+                </label><br>
+
+                <label>Crafting Skills:
+                    <textarea id="craftingSkills" name="craftingSkills" rows="2"></textarea>
+                </label><br>
+
+                <label>Powers:
+                    <textarea id="powers" name="powers" rows="2"></textarea>
+                </label>
+
+                <button type="button" onclick="saveAbilitiesSkills()">Save</button>
+            </form>
+        </div>
+
+            <!-- Equiment & Inventory -->
+        
+
+        <div id="misc" class="tab-content">
+            <h2>Miscellaneous</h2>
+            <form id="misc-form">
+                <label>Inspirations:
+                    <textarea id="inspirations" name="inspirations" rows="2"></textarea>
+                </label><br>
+
+                <label>Quotes:
+                    <textarea id="quotes" name="quotes" rows="2" placeholder="Add quotes said by or about character"></textarea>
+                </label><br>
+
+                <label>Notes:
+                    <textarea id="notes" name="notes" rows="2"></textarea>
+                </label><br>
+
+                <label>Tags:
+                    <textarea id="tags" name="tags" rows="2"></textarea>
+                </label>
+
+                <button type="button" onclick="saveMisc()">Save</button>
+            </form>
+        </div>
+    </div>
+    </body>
+</html>
