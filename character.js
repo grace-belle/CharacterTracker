@@ -1,171 +1,233 @@
-function saveBasicInfo() {
-  const character = {
-    firstName: document.getElementById("firstName").value,
-    lastName: document.getElementById("lastName").value,
-    age: document.getElementById("age").value,
-    gender: document.getElementById("gender").value,
-    species: document.getElementById("species").value
-    };
+let characters = (() => {
+    try {
+        const parsed = JSON.parse(localStorage.getItem("characters"));
+        return (parsed && typeof parsed === "object" && !Array.isArray(parsed)) ? parsed : {};
+    } catch {
+        return {};
+    }
+})();
+let currentCharacterId = null;
+let formChanged = false;
 
-    localStorage.setItem("currentCharacter", JSON.stringify(character));
-    alert("Character Saved!");
-}
-
-function loadBasicInfo() {
-    const saved = JSON.parse(localStorage.getItem("currentCharacter"));
-    if (saved) {
-        document.getElementById("firstName").value = saved.firstName || "";
-        document.getElementById("lastName").value = saved.lastName || "";
-        document.getElementById("age").value = saved.age || "";
-        document.getElementById("gender").value = saved.gender || "";
-        document.getElementById("species").value = saved.species || ""; 
-        document.getElementById("occupation").value = saved.occupation || "";
-        document.getElementById("homeland").value = saved.location || "";
+function updateCharacterList() {
+    const list = document.getElementById("character-list");
+    list.innerHTML = "";
+    console.log("Updating character list", characters);
+    for (const id in characters) {
+        const li = document.createElement("li");
+        li.textContent = characters[id].firstName || "Unnamed Character";
+        console.log("Character ID:", id, "Name:", li.textContent);
+        li.onclick = () => loadCharacter(id);
+        if (id == currentCharacterId) li.classList.add("active");
+        list.appendChild(li);
     }
 }
 
-function saveAppearance() {
-    let character = JSON.parse(localStorage.getItem("currentCharacter"));
+function createNewCharacter() {
+    const firstname = prompt("Enter character's name:");
 
-    //Update appearance properties
-    character.appearance = {
-        hairColor: document.getElementById("hairColor").value,
-        eyeColor: document.getElementById("eyeColor").value,
-        height: document.getElementById("height").value,
-        weight: document.getElementById("weight").value,
-        clothingStyle: document.getElementById("clothingStyle").value
+    if (!firstname) {
+        alert("Character name cannot be empty.");
+        return;
+    }
+
+    const id = "char_" + Date.now();
+    currentCharacterId = id;
+
+    characters[id] = {
+        firstName: firstname.trim(),
+        lastName: "",
+        title: "",
+        age: "",
+        gender: "",
+        species: "",
+        occupation: "",
+        homeland: "",
+        appearance: {
+            hairColor: "",
+            eyeColor: "",
+            height: "",
+            weight: "",
+            clothingStyle: ""
+        },
+        personality: {
+            traits: "",
+            likes: "",
+            dislikes: "",
+            hobbies: "",
+            strengths: "",
+            weaknesses: "",
+            motivations: "",
+            goals: "",
+            fears: "",
+            secrets: ""
+        },
+        background: {
+            backstory: "",
+            history: "",
+            significantEvents: "",
+            childhood: "",
+            education: "",
+            family: "",
+            relationships: ""
+        },
+        abilities: {
+            abilities: "",
+            skills: "",
+            specialSkills: "",
+            trainedSkills: "",
+            combatSkills: "",
+            magicSkills: "",
+            craftingSkills: "",
+            powers: ""
+        },
+        misc: {
+            inspirations: "",
+            quotes: "",
+            notes: "",
+            tags: ""
+        }
     };
 
-    localStorage.setItem("currentCharacter", JSON.stringify(character));
-    alert("Appearance Saved!");
+
+    loadCharacter(id);
+    updateCharacterList();
 }
 
-function loadAppearance() {
-    const saved = JSON.parse(localStorage.getItem("currentCharacter"));
-    if (saved && saved.appearance) {
-        document.getElementById("hairColor").value = saved.appearance.hairColor || "";
-        document.getElementById("eyeColor").value = saved.appearance.eyeColor || "";
-        document.getElementById("height").value = saved.appearance.height || "";
-        document.getElementById("weight").value = saved.appearance.weight || "";
-        document.getElementById("clothingStyle").value = saved.appearance.clothingStyle || ""; 
+function loadCharacter(id) {
+    if (currentCharacterId !== null && formChanged) {
+        saveCharacter();
+        formChanged = false;
+    }
+
+    currentCharacterId = id;
+    const char = characters[id];
+    if (!char) return;
+
+    
+
+    // Populate all forms
+  document.getElementById("firstName").value = char.firstName || '';
+  document.getElementById("lastName").value = char.lastName || '';
+  document.getElementById("title").value = char.title || '';
+  document.getElementById("age").value = char.age || '';
+  document.getElementById("gender").value = char.gender || '';
+  document.getElementById("species").value = char.species || '';
+  document.getElementById("occupation").value = char.occupation || '';
+  document.getElementById("homeland").value = char.homeland || '';
+
+  const a = char.appearance || {};
+  document.getElementById("hairColor").value = a.hairColor || '';
+  document.getElementById("eyeColor").value = a.eyeColor || '';
+  document.getElementById("height").value = a.height || '';
+  document.getElementById("weight").value = a.weight || '';
+  document.getElementById("clothingStyle").value = a.clothingStyle || '';
+
+  const p = char.personality || {};
+  document.getElementById("traits").value = p.traits || '';
+  document.getElementById("likes").value = p.likes || '';
+  document.getElementById("dislikes").value = p.dislikes || '';
+  document.getElementById("hobbies").value = p.hobbies || '';
+  document.getElementById("strengths").value = p.strengths || '';
+  document.getElementById("weaknesses").value = p.weaknesses || '';
+  document.getElementById("motivations").value = p.motivations || '';
+  document.getElementById("goals").value = p.goals || '';
+  document.getElementById("fears").value = p.fears || '';
+  document.getElementById("secrets").value = p.secrets || '';
+
+  const b = char.background || {};
+  document.getElementById("backstory").value = b.backstory || '';
+  document.getElementById("history").value = b.history || '';
+  document.getElementById("significantEvents").value = b.significantEvents || '';
+  document.getElementById("childhood").value = b.childhood || '';
+  document.getElementById("education").value = b.education || '';
+  document.getElementById("family").value = b.family || '';
+  document.getElementById("relationships").value = b.relationships || '';
+
+  const ab = char.abilities || {};
+  document.getElementById("abilities").value = ab.abilities || '';
+  document.getElementById("skills").value = ab.skills || '';
+  document.getElementById("specialSkills").value = ab.specialSkills || '';
+  document.getElementById("trainedSkills").value = ab.trainedSkills || '';
+  document.getElementById("combatSkills").value = ab.combatSkills || '';
+  document.getElementById("magicSkills").value = ab.magicSkills || '';
+  document.getElementById("craftingSkills").value = ab.craftingSkills || '';
+  document.getElementById("powers").value = ab.powers || '';
+
+  const m = char.misc || {};
+  document.getElementById("inspirations").value = m.inspirations || '';
+  document.getElementById("quotes").value = m.quotes || '';
+  document.getElementById("notes").value = m.notes || '';
+  document.getElementById("tags").value = m.tags || '';
+
+  updateCharacterList();
+  localStorage.setItem("lastCharacterId", id);
+}
+
+function saveCharacter() {
+    try{
+        if (currentCharacterId) {
+        characters[currentCharacterId] = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            title: document.getElementById("title").value,
+            age: document.getElementById("age").value,
+            gender: document.getElementById("gender").value,
+            species: document.getElementById("species").value,
+            occupation: document.getElementById("occupation").value,
+            homeland: document.getElementById("homeland").value,
+            appearance: {
+                hairColor: document.getElementById("hairColor").value,
+                eyeColor: document.getElementById("eyeColor").value,
+                height: document.getElementById("height").value,
+                weight: document.getElementById("weight").value,
+                clothingStyle: document.getElementById("clothingStyle").value
+            },
+            personality: {
+                traits: document.getElementById("traits").value,
+                likes: document.getElementById("likes").value,
+                dislikes: document.getElementById("dislikes").value,
+                hobbies: document.getElementById("hobbies").value,
+                strengths: document.getElementById("strengths").value,
+                weaknesses: document.getElementById("weaknesses").value,
+                motivations: document.getElementById("motivations").value,
+                goals: document.getElementById("goals").value,
+                fears: document.getElementById("fears").value,
+                secrets: document.getElementById("secrets").value
+            },
+            background: {
+                backstory: document.getElementById("backstory").value,
+                history: document.getElementById("history").value,
+                significantEvents: document.getElementById("significantEvents").value,
+                childhood: document.getElementById("childhood").value,
+                education: document.getElementById("education").value,
+                family: document.getElementById("family").value,
+                relationships: document.getElementById("relationships").value
+            },
+            abilities: {
+                abilities: document.getElementById("abilities").value,
+                skills: document.getElementById("skills").value,
+                specialSkills: document.getElementById("specialSkills").value,
+                trainedSkills: document.getElementById("trainedSkills").value,
+                combatSkills: document.getElementById("combatSkills").value,
+                magicSkills: document.getElementById("magicSkills").value,
+                powers: document.getElementById("powers").value
+            },
+            misc: {
+                inspirations: document.getElementById("inspirations").value,
+                quotes: document.getElementById("quotes").value,
+                notes: document.getElementById("notes").value,
+                tags: document.getElementById("tags").value
+            }
+        };
+    }
+    localStorage.setItem("characters", JSON.stringify(characters));
+    updateCharacterList();
+    } catch (error) {
+        console.error("Error saving character:", error);
     }
 }
 
-function savePersonality() {
-    let character = JSON.parse(localStorage.getItem("currentCharacter"));
-
-    character.personality = {
-        traits: document.getElementById("traits").value,
-        likes: document.getElementById("likes").value,
-        dislikes: document.getElementById("dislikes").value,
-        strengths: document.getElementById("strengths").value,
-        weaknesses: document.getElementById("weaknesses").value,
-        hobbies: document.getElementById("hobbies").value,
-        fears: document.getElementById("fears").value,
-        motivations: document.getElementById("motivations").value,
-        goals: document.getElementById("goals").value,
-        secrets: document.getElementById("secrets").value
-    };
-
-    localStorage.setItem("currentCharacter", JSON.stringify(character));
-    alert("Personality Saved!");
-}
-
-function loadPersonality() {
-    const saved = JSON.parse(localStorage.getItem("currentCharacter"));
-    if (saved && saved.personality) {
-        document.getElementById("traits").value = saved.personality.traits || "";
-        document.getElementById("likes").value = saved.personality.likes || "";
-        document.getElementById("dislikes").value = saved.personality.dislikes || "";
-        document.getElementById("strengths").value = saved.personality.strengths || "";
-        document.getElementById("weaknesses").value = saved.personality.weaknesses || "";
-        document.getElementById("hobbies").value = saved.personality.hobbies || ""; 
-        document.getElementById("fears").value = saved.personality.fears || ""; 
-        document.getElementById("motivations").value = saved.personality.motivations || ""; 
-        document.getElementById("goals").value = saved.personality.goals || ""; 
-        document.getElementById("secrets").value = saved.personality.secrets || ""; 
-    }
-}
-
-function saveBackground() {
-    let character = JSON.parse(localStorage.getItem("currentCharacter"));
-
-    character.background = {
-        backstory: document.getElementById("backstory").value,
-        history: document.getElementById("history").value,
-        significantEvents: document.getElementById("significantEvents").value,
-        family: document.getElementById("family").value,
-        relationships: document.getElementById("relationships").value
-    };
-
-    localStorage.setItem("currentCharacter", JSON.stringify(character));
-    alert("Background Saved!");
-}
-
-function loadBackground() {
-    const saved = JSON.parse(localStorage.getItem("currentCharacter"));
-    if (saved && saved.background) {
-        document.getElementById("backstory").value = saved.background.backstory || "";
-        document.getElementById("history").value = saved.background.history || "";
-        document.getElementById("significantEvents").value = saved.background.significantEvents || "";
-        document.getElementById("family").value = saved.background.family || ""; 
-        document.getElementById("relationships").value = saved.background.relationships || ""; 
-    }
-}
-
-function saveAbilities() {
-    let character = JSON.parse(localStorage.get("currentCharacter"));
-
-    character.abilities = {
-        abilities:document.getElementById("abilities").value,
-        skills:document.getElementById("skills").value,
-        specialskills:document.getElementById("specialSkills").value,
-        trainedskills:document.getElementById("trainedSkills").value,
-        combatskills:document.getElementById("combatSkills").value,
-        magicskills:document.getElementById("magic").value,
-        craftingskills:document.getElementById("craftingSkills").value,
-        powers:document.getElementById("powers").value
-    };
-
-    localStorage.setItem("currentCharacter", JSON.stringify(character));
-    alert("Abilities Saved!");
-}
-
-function loadAbilities() {
-    const saved = JSON.parse(localStorage.getItem("currentCharacter"));
-    if (saved && saved.abilities) {
-        document.getElementById("abilities").value = saved.abilities.abilities || "";
-        document.getElementById("skills").value = saved.abilities.skills || "";
-        document.getElementById("specialSkills").value = saved.abilities.specialskills || "";
-        document.getElementById("trainedSkills").value = saved.abilities.trainedskills || ""; 
-        document.getElementById("combatSkills").value = saved.abilities.combatskills || ""; 
-        document.getElementById("magic").value = saved.abilities.magicskills || ""; 
-        document.getElementById("craftingSkills").value = saved.abilities.craftingskills || ""; 
-        document.getElementById("powers").value = saved.abilities.powers || ""; 
-    }
-}
-
-function saveMisc() {
-    let character = JSON.parse(localStorage.getItem("currentCharacter"));
-
-    character.misc = {
-        inspirations: document.getElementById("inspirations").value,
-        notes: document.getElementById("notes").value,
-        quotes: document.getElementById("quotes").value
-    };
-
-    localStorage.setItem("currentCharacter", JSON.stringify(character));
-    alert("Miscellaneous Saved!");
-}
-
-function loadMisc() {
-    const saved = JSON.parse(localStorage.getItem("currentCharacter"));
-    if (saved && saved.misc) {
-        document.getElementById("inspirations").value = saved.misc.inspirations || "";
-        document.getElementById("notes").value = saved.misc.notes || "";
-        document.getElementById("quotes").value = saved.misc.quotes || ""; 
-    }
-}
 
 function openTab(tabId) {
     const tabs = document.querySelectorAll(".tab-content");
@@ -177,12 +239,23 @@ function openTab(tabId) {
     }
 }
 
+window.addEventListener("beforeunload", function () {
+    saveCharacter();
+});
+
 window.onload = function () {
     openTab('basic');
-    loadBasicInfo();
-    loadAppearance();
-    loadPersonality();
-    loadBackground();
-    loadAbilities();
-    loadMisc();
+    updateCharacterList();
+
+    const lastCharacterId = localStorage.getItem("lastCharacterId");
+    if (lastCharacterId && characters[lastCharacterId]) {
+        loadCharacter(lastCharacterId);
+    }
+    
+    const inputs = document.querySelectorAll("input, textarea");
+    inputs.forEach(input => {
+        input.addEventListener("input", () => {
+            formChanged = true;
+        });
+    });
 }
